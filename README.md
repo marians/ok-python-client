@@ -26,3 +26,24 @@ Python Client für die Offenes Köln API
     print result[0].attachments[0].url
     print result[0].attachments[0].content
 
+
+## Status
+
+Bisher wird nur die API-Methode zum Abruf von Dokumenten (/api/documents) unterstützt.
+
+Der Zugriff auf die anderen API-Methoden (siehe http://offeneskoeln.de/api/) ist noch nicht implementiert.
+
+## Feedback
+
+ist immer herzlich willkommen! Bitte benutzt die Seite "Issues" in der Navigation. Oder schickt Pull Requests.
+
+## Lizenz
+
+Public Domain
+
+## Weitere Info
+
+Offenes Köln: http://offeneskoeln.de/
+Blog: http://blog.offeneskoeln.de/
+Twitter: https://twitter.com/OffenesKoeln
+Facebook: http://www.facebook.com/offeneskoeln
