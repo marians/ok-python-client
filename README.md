@@ -43,7 +43,7 @@ Public Domain
 
 ## Weitere Info
 
-Offenes Köln: http://offeneskoeln.de/
-Blog: http://blog.offeneskoeln.de/
-Twitter: https://twitter.com/OffenesKoeln
-Facebook: http://www.facebook.com/offeneskoeln
+* Offenes Köln: http://offeneskoeln.de/
+* Blog: http://blog.offeneskoeln.de/
+* Twitter: https://twitter.com/OffenesKoeln
+* Facebook: http://www.facebook.com/offeneskoeln
