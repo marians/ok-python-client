@@ -21,6 +21,7 @@ class DocumentsTestCase(unittest.TestCase):
         # test some general assumptions on all docs
         self.assertEqual(str(type(response)),
             "<class 'okclient.DocumentsResponse'>")
+        self.assertTrue(response.okay())
         self.assertEqual(len(response), 1)
         self.assertEqual(response[0].date, datetime(2013, 1, 21))
         self.assertEqual(type(response[0].title), unicode)
@@ -29,14 +30,18 @@ class DocumentsTestCase(unittest.TestCase):
     def testRequestSingleDefaultParam(self):
         response1 = self.oc.documents("AN/0105/2013")
         response2 = self.oc.documents(reference="AN/0105/2013")
+        self.assertTrue(response1.okay())
+        self.assertTrue(response2.okay())
         self.assertEqual(response1, response2)
 
     def testRequestSingleAttachments(self):
         response = self.oc.documents("3384/2008", attachments=True)
+        self.assertTrue(response.okay())
         self.assertGreater(len(response[0].attachments), 0)
 
     def testRequestSingleThumbnails(self):
         response = self.oc.documents("3384/2008", thumbnails=True)
+        self.assertTrue(response.okay())
         self.assertGreater(len(response[0].attachments[0].thumbnails), 0)
         self.assertTrue(str(type(response[0].attachments[0].thumbnails[0])),
             "<class 'okclient.Thumbnail'>")
@@ -45,11 +50,51 @@ class DocumentsTestCase(unittest.TestCase):
 
     def testRequestSingleConsultations(self):
         response = self.oc.documents("3384/2008", consultations=True)
+        self.assertTrue(response.okay())
         self.assertGreater(len(response[0].consultations), 0)
 
     def testSearch(self):
         response = self.oc.documents(query="stadtbahn")
+        self.assertTrue(response.okay())
         self.assertGreater(len(response), 0)
+
+
+class LocationsTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.oc = okclient.Client()
+
+    def testSimple(self):
+        response = self.oc.locations("Gertrudenstraße")
+        self.assertEqual(str(type(response)),
+            "<class 'okclient.LocationsResponse'>")
+        self.assertTrue(response.okay())
+        self.assertTrue(response.nodes is not None)
+        self.assertTrue(response.averages is not None)
+        self.assertTrue(len(response.nodes) > 0)
+        self.assertTrue(len(response.averages[0]) == 2)
+
+    def testUnknownStreet(self):
+        response = self.oc.locations("Gertrudenstr")
+        self.assertEqual(str(type(response)),
+            "<class 'okclient.LocationsResponse'>")
+        self.assertFalse(response.okay())
+
+    def testWithoutNodes(self):
+        response = self.oc.locations("Alpenerstraße", nodes=False)
+        self.assertEqual(str(type(response)),
+            "<class 'okclient.LocationsResponse'>")
+        self.assertTrue(response.okay())
+        self.assertTrue(response.nodes is None)
+        self.assertTrue(response.averages is not None)
+
+    def testWithoutAverages(self):
+        response = self.oc.locations("Venloer Straße", averages=False)
+        self.assertEqual(str(type(response)),
+            "<class 'okclient.LocationsResponse'>")
+        self.assertTrue(response.okay())
+        self.assertTrue(response.averages is None)
+        self.assertTrue(response.nodes is not None)
 
 
 

@@ -26,10 +26,21 @@ Python Client für die Offenes Köln API
     print result[0].attachments[0].url
     print result[0].attachments[0].content
 
+    # Position der "Mittelstraße" abrufen
+    mittelstr = oc.locations("Mittelstraße")
+    # Mittelpunkt der Mitteltraße ausgeben
+    print mittelstraße.averages[0]
+    # Knoten der Mittelstraße ausgeben
+    for node in mittelstraße.nodes:
+        print node
+
 
 ## Status
 
-Bisher wird nur die API-Methode zum Abruf von Dokumenten (/api/documents) unterstützt.
+Bisher werden die folgenden API-Methoden unterstützt:
+
+ * documents (/api/documents) zum Abruf von Dokumenten
+ * locations (/api/locations) zum Abruf von Ortsinformationen zu Straßen und Plätzen
 
 Der Zugriff auf die anderen API-Methoden (siehe http://offeneskoeln.de/api/) ist noch nicht implementiert.
 

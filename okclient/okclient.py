@@ -86,10 +86,7 @@ class Response(object):
     status = None
     request_duration = None
     request_params = None
-    hits = None
     result_entries = None
-    max_score = None
-    start = None
     method = None
 
     def __init__(self, response_dict, method):
@@ -142,6 +139,10 @@ class Response(object):
 
 
 class DocumentsResponse(Response):
+    hits = None
+    max_score = None
+    start = None
+
     def __init__(self, response_dict):
         super(DocumentsResponse,
               self).__init__(response_dict, 'documents')
@@ -167,6 +168,22 @@ class DocumentsResponse(Response):
             if rest > 0:
                 return True
         return False
+
+
+class LocationsResponse(Response):
+    nodes = None
+    averages = None
+
+    def __init__(self, response_dict):
+
+        super(LocationsResponse,
+              self).__init__(response_dict, 'locations')
+        if ('response' in response_dict and
+            response_dict['response'] is not None):
+            if 'averages' in response_dict['response']:
+                self.averages = response_dict['response']['averages']
+            if 'nodes' in response_dict['response']:
+                self.nodes = response_dict['response']['nodes']
 
 
 class Client(object):
@@ -224,8 +241,32 @@ class Client(object):
             params['output'] = ','.join(output)
         return self.call_method('documents', params)
 
-    def locations(self):
-        pass
+    def locations(self,
+                  street,
+                  averages=True,
+                  nodes=True):
+        """
+        Returns the location nodes of the street(s) with the
+        given name. If the argument "averages" is True, the
+        average latitude and longitude tuple is returned. If
+        "nodes" is True, the individual nodes (from OSM data)
+        are returned.
+        Note that OSM data has it's own license. Also note that
+        some streets are ambigious. This means that the average
+        latitude and longitude might be somewhere in the middle
+        the two streets with the same name. Keep an eye on this
+        issue: https://github.com/marians/offeneskoeln/issues/21
+        """
+        output = Set([])
+        if averages:
+            output.add('averages')
+        if nodes:
+            output.add('nodes')
+        params = {
+            'street': street,
+            'output': ','.join(output)
+        }
+        return self.call_method('locations', params)
 
     def streets(self):
         pass
@@ -247,8 +288,8 @@ class Client(object):
         response = request.read()
         if method == 'documents':
             return DocumentsResponse(json.loads(response))
+        elif method == 'locations':
+            return LocationsResponse(json.loads(response))
         else:
-            # TODO: instanciate specific response types as implemented
+            # TODO: instantiate specific response types as implemented
             return Response(json.loads(response), method)
-
-
