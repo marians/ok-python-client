@@ -30,14 +30,14 @@ Python Client für die Offenes Köln API
     streets = oc.streets(lat=50.959, lon=6.946)
     for street in streets:
         (name, distance) = street
-        print "%s is $d meters away" % (name, distance)
+        print "%s is %d meters away" % (name, distance)
 
     # Position der "Mittelstraße" abrufen
     mittelstr = oc.locations("Mittelstraße")
     # Mittelpunkt der Mitteltraße ausgeben
-    print mittelstraße.averages[0]
+    print mittelstr.averages[0]
     # Knoten der Mittelstraße ausgeben
-    for node in mittelstraße.nodes:
+    for node in mittelstr.nodes:
         print node
 
 

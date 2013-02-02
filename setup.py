@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='okclient',
-      version='0.2',
+      version='0.3',
       description='Client for the Offenes Köln API',
       long_description="""Offenes Köln is a platform that allows for flexible access
 to the content of the City of Cologne/Germany's city council information system.
@@ -39,15 +39,15 @@ More detailed information on the REST API is available at http://offeneskoeln.de
     streets = oc.streets(lat=50.959, lon=6.946)
     for street in streets:
         (name, distance) = street
-        print "%s is $d meters away" % (name, distance)
+        print "%s is %d meters away" % (name, distance)
 
     # Find position of street "Mittelstraße"
     # (also called geocoding)
     mittelstr = oc.locations("Mittelstraße")
     # return quasi-centroid of that street
-    print mittelstraße.averages[0]
+    print mittelstr.averages[0]
     # print out all nodes of that streets
-    for node in mittelstraße.nodes:
+    for node in mittelstr.nodes:
         print node
 
 **Feedback**
