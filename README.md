@@ -9,6 +9,8 @@ Python Client für die Offenes Köln API
 
 ## Quickstart
 
+
+```python
     import okclient
     
     oc = okclient.Client()
@@ -39,6 +41,7 @@ Python Client für die Offenes Köln API
     # Knoten der Mittelstraße ausgeben
     for node in mittelstr.nodes:
         print node
+```
 
 
 ## Status
