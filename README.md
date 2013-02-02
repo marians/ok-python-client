@@ -26,6 +26,12 @@ Python Client für die Offenes Köln API
     print result[0].attachments[0].url
     print result[0].attachments[0].content
 
+    # Straßen im Umkreis einer bestimmten Position finden
+    streets = oc.streets(lat=50.959, lon=6.946)
+    for street in streets:
+        (name, distance) = street
+        print "%s is $d meters away" % (name, distance)
+
     # Position der "Mittelstraße" abrufen
     mittelstr = oc.locations("Mittelstraße")
     # Mittelpunkt der Mitteltraße ausgeben
@@ -37,9 +43,10 @@ Python Client für die Offenes Köln API
 
 ## Status
 
-Bisher werden die folgenden API-Methoden unterstützt:
+Diese drei öffentlichen Methoden der Offenes Köln API werden unterstützt:
 
  * documents (/api/documents) zum Abruf von Dokumenten
+ * streets ( /api/streets) zum Finden von Straßen im Umkreis eine Geo-Position
  * locations (/api/locations) zum Abruf von Ortsinformationen zu Straßen und Plätzen
 
 Der Zugriff auf die anderen API-Methoden (siehe http://offeneskoeln.de/api/) ist noch nicht implementiert.

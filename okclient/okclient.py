@@ -103,7 +103,13 @@ class Response(object):
         if method is None:
             raise ValueError("Argument 'method' is None")
         self.method = method
-        self.status = response_dict['status']
+        # TODO: This exception sucks. See
+        # https://github.com/marians/offeneskoeln/issues/72
+        if method == 'streets':
+            if len(response_dict['response']['streets']):
+                self.status = 0
+        else:
+            self.status = response_dict['status']
         self.request_duration = response_dict['duration']
         self.request_params = response_dict['request']
 
@@ -132,8 +138,6 @@ class Response(object):
         if self.request_params != other.request_params:
             return False
         if self.status != other.status:
-            return False
-        if self.hits != other.hits:
             return False
         return True
 
@@ -175,7 +179,6 @@ class LocationsResponse(Response):
     averages = None
 
     def __init__(self, response_dict):
-
         super(LocationsResponse,
               self).__init__(response_dict, 'locations')
         if ('response' in response_dict and
@@ -184,6 +187,15 @@ class LocationsResponse(Response):
                 self.averages = response_dict['response']['averages']
             if 'nodes' in response_dict['response']:
                 self.nodes = response_dict['response']['nodes']
+
+
+class StreetsResponse(Response):
+    def __init__(self, response_dict):
+        super(StreetsResponse,
+              self).__init__(response_dict, 'streets')
+        if ('response' in response_dict and
+            response_dict['response'] is not None):
+            self.result_entries = response_dict['response']['streets']
 
 
 class Client(object):
@@ -268,8 +280,21 @@ class Client(object):
         }
         return self.call_method('locations', params)
 
-    def streets(self):
-        pass
+    def streets(self,
+                lat=None,
+                lon=None,
+                radius=500):
+        """
+        Returns streets in the radius of a given location,
+        sorted by distance. Optionally, the search radius can
+        be limited (in meters).
+        """
+        params = {
+            'lat': lat,
+            'lon': lon,
+            'radius': radius
+        }
+        return self.call_method('streets', params)
 
     def terms(self):
         pass
@@ -290,6 +315,8 @@ class Client(object):
             return DocumentsResponse(json.loads(response))
         elif method == 'locations':
             return LocationsResponse(json.loads(response))
+        elif method == 'streets':
+            return StreetsResponse(json.loads(response))
         else:
             # TODO: instantiate specific response types as implemented
             return Response(json.loads(response), method)

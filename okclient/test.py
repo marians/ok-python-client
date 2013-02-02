@@ -11,6 +11,32 @@ def suite():
     return suite
 
 
+class StreetsTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.oc = okclient.Client()
+
+    def testSimple(self):
+        streets = self.oc.streets(lat=50.959, lon=6.946)
+        self.assertEqual(str(type(streets)),
+            "<class 'okclient.StreetsResponse'>")
+        self.assertTrue(streets.okay())
+        self.assertTrue(len(streets) > 0)
+
+    def testSmallRadius(self):
+        """
+        This request should only return one street
+        (Matthias-Brüggen-Straße)
+        """
+        streets = self.oc.streets(lat=50.975347, lon=6.890944, radius=100)
+        self.assertEqual(str(type(streets)),
+            "<class 'okclient.StreetsResponse'>")
+        self.assertTrue(streets.okay())
+        self.assertTrue(len(streets) == 1)
+        self.assertEqual(streets[0][0], u'Mathias-Br\xfcggen-Stra\xdfe')
+        self.assertTrue(type(streets[0][1]), int)
+
+
 class DocumentsTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -95,7 +121,6 @@ class LocationsTestCase(unittest.TestCase):
         self.assertTrue(response.okay())
         self.assertTrue(response.averages is None)
         self.assertTrue(response.nodes is not None)
-
 
 
 if __name__ == '__main__':
