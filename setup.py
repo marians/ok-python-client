@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='okclient',
-      version='0.1',
+      version='0.2',
       description='Client for the Offenes Köln API',
       long_description="""Offenes Köln is a platform that allows for flexible access
 to the content of the City of Cologne/Germany's city council information system.
@@ -11,10 +11,6 @@ to the content of the City of Cologne/Germany's city council information system.
 Find more information about the platform at http://offeneskoeln.de/.
 
 More detailed information on the REST API is available at http://offeneskoeln.de/api/.
-
-The **current status** of the client:
-
-For now, only access to the REST method /api/documents is implemented.
 
 **Install**
 
@@ -24,17 +20,35 @@ For now, only access to the REST method /api/documents is implemented.
 
     import okclient
     oc = okclient.Client()
+
     # Search for documents containing "Haushalt"
-    result = oc.documents(query="Haushalt")
+    result = oc.documents(query="haushalt")
     for doc in result:
         print doc.date, doc.title
+
     # Retrieve the document with identifier "3323/2008"
-    # including attachments
-    result = oc.documents("3323/2008", attachments=True, thumbnails=True)
+    # including attachments and thumbnails
+    result = oc.documents("3323/2008", attachments=True,
+                          thumbnails=True)
     print result[0].date, result[0].title
     print result[0].attachments[0].url
     print result[0].attachments[0].content
 
+    # Find streets surrounding a geo position
+    # (reverse geocoding)
+    streets = oc.streets(lat=50.959, lon=6.946)
+    for street in streets:
+        (name, distance) = street
+        print "%s is $d meters away" % (name, distance)
+
+    # Find position of street "Mittelstraße"
+    # (also called geocoding)
+    mittelstr = oc.locations("Mittelstraße")
+    # return quasi-centroid of that street
+    print mittelstraße.averages[0]
+    # print out all nodes of that streets
+    for node in mittelstraße.nodes:
+        print node
 
 **Feedback**
 
