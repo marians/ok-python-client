@@ -202,7 +202,7 @@ class Client(object):
 
     baseurl = 'http://offeneskoeln.de/api/'
 
-    def __init__(self, response_dict, baseurl=None):
+    def __init__(self, baseurl=None):
         if baseurl is not None:
             self.baseurl = baseurl
 
