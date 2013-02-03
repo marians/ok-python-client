@@ -30,8 +30,7 @@ print result[0].attachments[0].content
 
 # Straßen im Umkreis einer bestimmten Position finden
 streets = oc.streets(lat=50.959, lon=6.946)
-for street in streets:
-    (name, distance) = street
+for (name, distance) in streets:
     print "%s is %d meters away" % (name, distance)
 
 # Position der "Mittelstraße" abrufen

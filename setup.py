@@ -3,9 +3,14 @@
 from distutils.core import setup
 
 setup(name='okclient',
-      version='0.3',
-      description='Client for the Offenes Köln API',
-      long_description="""Offenes Köln is a platform that allows for flexible access
+    version='0.3',
+    author='Marian Steinbach',
+    author_email='marian@sendung.de',
+    url='https://github.com/marians/ok-python-client',
+    packages=['okclient'],
+    license="Public Domain",
+    description='Client for the Offenes Köln API',
+    long_description="""Offenes Köln is a platform that allows for flexible access
 to the content of the City of Cologne/Germany's city council information system.
 
 Find more information about the platform at http://offeneskoeln.de/.
@@ -37,8 +42,7 @@ More detailed information on the REST API is available at http://offeneskoeln.de
     # Find streets surrounding a geo position
     # (reverse geocoding)
     streets = oc.streets(lat=50.959, lon=6.946)
-    for street in streets:
-        (name, distance) = street
+    for (name, distance) in streets:
         print "%s is %d meters away" % (name, distance)
 
     # Find position of street "Mittelstraße"
@@ -62,10 +66,4 @@ the twitter account.
 
 http://blog.offeneskoeln.de/
 https://twitter.com/OffenesKoeln
-""",
-      author='Marian Steinbach',
-      author_email='marian@sendung.de',
-      url='https://github.com/marians/ok-python-client',
-      packages=['okclient'],
-      license="Public Domain"
-     )
+""")
