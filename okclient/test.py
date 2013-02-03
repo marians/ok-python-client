@@ -22,6 +22,9 @@ class StreetsTestCase(unittest.TestCase):
             "<class 'okclient.StreetsResponse'>")
         self.assertTrue(streets.okay())
         self.assertTrue(len(streets) > 0)
+        for (name, distance) in streets:
+            self.assertEqual(type(name), unicode)
+            self.assertEqual(type(distance), int)
 
     def testSmallRadius(self):
         """
